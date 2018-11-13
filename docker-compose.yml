@@ -2,35 +2,41 @@ version: "3"
 services:
 
   service-v1:
-    image: message-v1
-    ports:
-      - "9007:9007"
+    image: mgomezb/message-v1
+    expose:
+      - 9007
     environment:
       - SERVICE_PORT=9007
+      - SERVICE_NAME=service-v1
     links:
       - messageapp
       - mongodb_message
       - replica_message
       - redis
       - credit
+      - balancer
     depends_on:
       - messageapp
       - mongodb_message
       - replica_message
       - redis
+    deploy:
+      replicas: 5
 
   service-v2:
-    image: message-v2
-    ports:
-      - "9008:9008"
+    image: mgomezb/message-v2
+    expose:
+      - 9008
     environment:
       - SERVICE_PORT=9008
+      - SERVICE_NAME=service-v2
     links:
       - messageapp
       - mongodb_message
       - replica_message
       - redis
       - credit
+      - balancer
     depends_on:
       - messageapp
       - mongodb_message
@@ -38,9 +44,11 @@ services:
       - redis
 
   credit:
-    build: credit/
+    image: credit
     ports:
       - "9017:9017"
+    environment:
+      - SERVICE_PORT=9017
     links:
       - mongodb_credit
       - replica_credit

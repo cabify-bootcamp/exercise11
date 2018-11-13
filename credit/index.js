@@ -1,3 +1,7 @@
+require('dotenv').config();
+
+const service_port = process.env.SERVICE_PORT || 9007
+
 const http = require("http");
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -46,6 +50,6 @@ app.use(function(err, req, res, next) {
 });
 
 
-app.listen(9017, function() {
-  console.log("App started on PORT 9017");
+app.listen(service_port, function() {
+  console.log(`App started on PORT ${service_port}`);
 });
