@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const service_port = process.env.SERVICE_PORT || 9007
+const service_port = process.env.SERVICE_PORT || 9017
 
 const http = require("http");
 const express = require("express");

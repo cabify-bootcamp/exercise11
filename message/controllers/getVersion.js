@@ -1,8 +1,9 @@
 require('dotenv').config();
+const service_version = process.env.SERVICE_NAME || 9007
 
 
 module.exports = function(req, res) {
     
-        res.send('version: 1.0')
+        res.send(`${service_version}`)
 
 };
