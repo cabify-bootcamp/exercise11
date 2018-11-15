@@ -7,7 +7,7 @@ const random = n => Math.floor(Math.random() * Math.floor(n));
 
 module.exports = function(message, credit) {
   const messageContent = message
-  const messageJSON = JSON.stringify(message);
+  const postData = JSON.stringify(message);
   
   let current_credit = credit
 
@@ -23,7 +23,7 @@ module.exports = function(message, credit) {
         json: true,
         headers: {
           "Content-Type": "application/json",
-          "Content-Length": Buffer.byteLength(messageJSON)
+          "Content-Length": Buffer.byteLength(postData)
         }
       };
 
@@ -90,20 +90,27 @@ module.exports = function(message, credit) {
 
       slaveCircuit.exec(postOptions)
         .then((result) =>{
-          console.log(`result: ${result}`,util.inspect(result));
+          console.log(`result: ${util.inspect(result)}`);
         })
         .catch(error =>{
-          console.error(`error: ${error}`);
+          console.error(`error: ${util.inspect(error)}`);
         });
 
+      brake.isOpen()
+    
       } else {
-        console.log("No credit error")
+        updateMessage({
+          ...messageContent,
+          status: "NO CREDIT"
+        },
+        () => {
+          console.log("NO CREDIT");
+        })
       }
 
       // brake.on('snapshot', snapshot => {
       //   console.log(`Stats received -> ${util.inspect(snapshot)}`);
       // });
 
-      brake.isOpen()
-      
+
 };

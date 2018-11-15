@@ -2,12 +2,28 @@ const uuidv4 = require('uuid/v4')
 const Queue = require('bull');
 const saveMessage = require('../transactions/saveMessage')
 const sendMessage = require('./sendMessage')
+const brake = require('../brakes')
+
 
 const creditCheckQueue = new Queue('creditCheckQueue', 'redis://127.0.0.1:6379');
 const creditCheckResponseQueue = new Queue('creditCheckResponseQueue', 'redis://127.0.0.1:6379');
 // const creditCheckQueue = new Queue('creditCheckQueue', 'redis://redis:6379');
 // const creditCheckResponseQueue = new Queue('creditCheckResponseQueue', 'redis://redis:6379');
 
+
+brake.on('circuitOpen', () => {
+    console.log('----------Circuit Opened--------------');
+    creditCheckQueue.pause().then(function(){
+        console.log('Credit Check Jobs are paused')
+      });
+});
+  
+brake.on('circuitClosed', () => {
+    console.log('----------Circuit Closed--------------');
+    creditCheckQueue.resumed().then(function(){
+        console.log('Credit Check Jobs are resumed')
+    });
+});
 
 function queueCreditCheck(req, res, next) {
 
@@ -33,7 +49,6 @@ function queueCreditCheck(req, res, next) {
 
 creditCheckResponseQueue.process(async (job, done) => {
     sendMessage(job.data.messageParams, job.data.credit)
-    done(null, 'done')
 })
 
 creditCheckResponseQueue.on('completed', (job, result) => {

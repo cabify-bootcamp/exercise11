@@ -17,7 +17,7 @@ let messageSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["PENDING" , "ERROR", "OK", "TIMEOUT"]
+    enum: ["NO CREDIT", "PENDING" , "ERROR", "OK", "TIMEOUT"]
   }
 });
 
