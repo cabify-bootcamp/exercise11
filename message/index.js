@@ -10,13 +10,13 @@ const getMessages = require("./controllers/getMessages");
 const getHealth = require("./controllers/getHealth");
 const getVersion = require("./controllers/getVersion");
 const getMessageStatus = require("./controllers/getMessageStatus");
-const redis = require('redis')
+// const redis = require('redis')
 
-client = redis.createClient();
+// client = redis.createClient();
 
-client.flushdb( function (err, succeeded) {
-  console.log(succeeded); // will be true if successfull
-});
+// client.flushdb( function (err, succeeded) {
+//   console.log(succeeded, 'IN2'); // will be true if successfull
+// });
 
 var debug = require('debug')
 

@@ -2,17 +2,19 @@ const http = require("http");
 const saveMessage = require("../clients/saveMessage");
 const brake = require('../brakes')
 const util = require('util')
+const logger = require('../logger')
 
 const random = n => Math.floor(Math.random() * Math.floor(n));
 
 module.exports = function(message, credit) {
   const messageContent = message
   const postData = JSON.stringify(message);
-  
   let current_credit = credit
+  
+  
 
     if (current_credit > 0) {
-      
+      logger.log('info', `Credit received, proceeding to send message with uuid: ${messageContent.uuid}`)    
       const postOptions = {
         // host: "exercise4_messageapp_1",
         // host: "messageapp",
@@ -38,9 +40,10 @@ module.exports = function(message, credit) {
                   },
                   function(_result, error) {
                     if (error) {
-                      console.log(error)
+                      logger.log('error', `Error while trying to update message with uuid: ${messageContent.uuid}`)  
                     } else {
-                      console.log(messageContent)
+                      logger.log('info', `Successfull message update with uuid: ${messageContent.uuid}`)  
+
                     }
                   }
                 )
@@ -53,30 +56,31 @@ module.exports = function(message, credit) {
                     },
                     function(_result, error) {
                       if (error) {
-                        console.log(error)
+                        logger.log('error', `Error while trying to save message with timeout status and  uuid: ${messageContent.uuid}`) 
                       } else {
-                        console.log(messageContent)
+                        logger.log('info', `Successfully changed status to timeout, message uuid: ${messageContent.uuid}`)
                       }
                     }
                   )
-                  reject(new Error('statusCode=' + res.statusCode));
+                  reject(logger.log('warn', `Rejecting Message timeout by messageapp with uuid: ${messageContent.uuid}`)  
+                  );
                 }
             });
 
             req.setTimeout(random(1000));
 
             req.on("timeout", () => {
-            console.error("Timeout Exceeded!");
+            logger.log('error', `Message service has timeout on message with uuid: ${messageContent.uuid}`)  
             saveMessage(
                   {
                     ...messageContent,
                     status: "TIMEOUT"
                   },
                   () => {
-                    console.log("Internal server error: TIMEOUT")
+                    logger.log('error', `Internal server error, message uuid: ${messageContent.uuid}`) 
                   }
               );
-              reject(new Error('Timeout'))
+              reject(logger.log('warn', `Rejecting, Service timeout by messageapp with uuid: ${messageContent.uuid}`))
             });
 
             req.write(postData);
@@ -90,19 +94,19 @@ module.exports = function(message, credit) {
 
       slaveCircuit.exec(postOptions)
         .then((result) =>{
-          console.log(`result: ${util.inspect(result)}`);
+          logger.log('info', `http request resolved for message with: ${messageContent.uuid}`)
         })
         .catch(error =>{
-          console.error(`error: ${util.inspect(error)}`);
+          logger.log('info', `http request rejected for message with: ${messageContent.uuid}`)
         });
     
       } else {
-        updateMessage({
+        saveMessage({
           ...messageContent,
           status: "NO CREDIT"
         },
         () => {
-          console.log("NO CREDIT");
+          logger.log('info', `Rejecting service, user has no credit to send messageapp with uuid: ${messageContent.uuid}`)
         })
       }
 

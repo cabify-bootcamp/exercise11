@@ -11,12 +11,12 @@ const txQueue = new Queue('txQueue', 'redis://127.0.0.1:6379');
 // const txQueue = new Queue('txQueue', 'redis://redis:6379');
 
 const updateCreditTransaction = require("../transactions/updateCredit");
-const getCredit = require("./getCredit");
+const getCredit = require("../clients/getCredit");
 
 creditCheckQueue.process(async (job, done) => {
-    console.log(job.data)
     Promise.resolve(getCredit().then( credit => {
-        done(null, credit)}))
+        amount = credit[0].amount
+        done(null, amount)}))
 })
 
 

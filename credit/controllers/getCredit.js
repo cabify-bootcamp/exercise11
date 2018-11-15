@@ -1,7 +1,8 @@
-const getCredit = require("../clients/getCredit");
+const getCredit = require('../clients/getCredit');
 
-module.exports = function() {
-    return getCredit().then(credit => {
-        return credit[0].amount
-      });
-};
+module.exports = function (req, res, next) {
+    return getCredit()
+        .then(message => {
+            res.status(200).json(message);
+        })
+}

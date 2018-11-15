@@ -12,7 +12,7 @@ const creditCheckResponseQueue = new Queue('creditCheckResponseQueue', 'redis://
 let isCreditChecking = true
 // const creditCheckQueue = new Queue('creditCheckQueue', 'redis://redis:6379');
 // const creditCheckResponseQueue = new Queue('creditCheckResponseQueue', 'redis://redis:6379');
-
+const logger = require('../logger')
 
 
 
@@ -32,28 +32,31 @@ function queueCreditCheck(req, res, next) {
                 Promise.resolve(saveMessage(messageObj,
                     function (_result, error) {
                         if (error) {
-                            console.log('Error 500.', error);
+                            logger.log('error', 'Error 500: an error has ocurred while saving the message')
                         } else {
-                            console.log('Successfully saved');
+                            logger.log('info', 'Message has been saved, ready to be processed')
                         }
                     })))
             .then( () => {
                 if (!brake.isOpen()) {
+                    logger.log('info', `Circuit closed, message send`)
                     res.status(200).send(`Message send successfully, you can check the your message status using /messages/${uuid}/status`)
                 } else {
+                    logger.log('info', `Circuit open, message queuing, waiting...`)
                     res.status(200).send(`Message service is having some delays, please check later using /messages/${uuid}/status`)
                 }
             })
             } else {
-                console.log(isCreditChecking)
+                logger.log('info', `Service is full, queue limit reached ${queueLimit}`)
                 res.status(200).send(`Service is full, try again later`)
             }
         }) 
 }
 
 function queueManager(queue) {
+
     return queue.count().then( (jobs) => {
-        console.log(jobs)
+        logger.log('info', `Pending jobs: ${jobs}`)
         if (jobs >= queueLimit) {
             isCreditChecking = false
         } else if (isCreditChecking == false && jobs == queueRestore) {
@@ -62,19 +65,20 @@ function queueManager(queue) {
             isCreditChecking = true
         }
     })
+
 }
 
 brake.on('circuitOpen', () => {
-    console.log('----------Circuit Opened--------------');
+    logger.log('warn', 'Circuit has opened')
     creditCheckQueue.pause().then(function(){
-        console.log('Credit Check Jobs are paused')
+        logger.log('warn', 'Credit Check Jobs are paused')
       });
 });
   
 brake.on('circuitClosed', () => {
-    console.log('----------Circuit Closed--------------');
+    logger.log('warn', 'Circuit has closed')
     creditCheckQueue.resumed().then(function(){
-        console.log('Credit Check Jobs are resumed')
+        logger.log('warn', 'Credit Check Jobs are resumed')
     });
 });
 

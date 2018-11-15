@@ -1,6 +1,7 @@
 const database = require("../database");
 const Message = require("../models/message");
 const { cleanClone } = require("../utils");
+const logger = require('../logger')
 
 function saveMessageReplica(replica, retries) {
   if (retries > 0) {
@@ -8,12 +9,11 @@ function saveMessageReplica(replica, retries) {
     return replica
       .save()
       .then(doc => {
-        console.log("Message replicated successfully", doc);
+        logger.log('info', `Message replicated succesfully with uuid: ${doc.uuid}`)
         return doc;
       })
       .catch(err => {
-        console.log("Error while saving message replica", err);
-        console.log("Retrying...");
+        logger.log('error', `Error while trying to save replica with uuid: ${doc.uuid}, retrying...`)
         return saveMessageReplica(replica, retries - 1);
       });
   }
@@ -29,11 +29,10 @@ function saveMessageTransaction(newValue) {
   return MessagePrimary.findOneAndUpdate(
     {"uuid": uuid}, newValue, {new: true})
     .then(doc => {
-      console.log(doc)
       if ( doc == null ) {
       return message.save()
         .then(doc => {
-          console.log("Message saved successfully:", doc);
+          logger.log('info', `Message saved successfully with uuid: ${doc.uuid}`)
           return cleanClone(doc);
         })
         .then(clone => {
@@ -42,12 +41,12 @@ function saveMessageTransaction(newValue) {
           return clone;
         })
         .catch(err => {
-          console.log("Error while saving message", err);
+          logger.log('error', `Error while saving messages with uuid: : ${doc.uuid}`)
           throw err;
         });
       } else {
         MessageReplica.findOneAndUpdate({"uuid": uuid}, newValue, {new: true})
-        .then(doc => console.log(doc))
+        .then(doc => logger.log('info', `Message replica updated with uuid: ${doc.uuid}`))
       }
     })
 }
@@ -56,6 +55,7 @@ module.exports = function(messageParams, cb) {
   saveMessageTransaction(messageParams, cb)
     .then(() => cb())
     .catch(err => {
+      logger.log('error', 'Error while trying to save message transaction')
       cb(undefined, err);
     });
 };
