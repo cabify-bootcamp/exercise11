@@ -1,3 +1,7 @@
+require('dotenv').config();
+
+const queueLimit = process.env.QUEUE_LIMIT|| 10
+const queueRestore = process.env.QUEUE_RESTORE || 5
 const uuidv4 = require('uuid/v4')
 const Queue = require('bull');
 const saveMessage = require('../transactions/saveMessage')
@@ -41,9 +45,9 @@ function queueCreditCheck(req, res, next) {
 
 function queueManager(queue) {
     return queue.count().then( (jobs) => {
-        if (jobs >= 10) {
+        if (jobs >= queueLimit) {
             isCreditChecking = false
-        } else if (isCreditChecking == false && jobs == 5) {
+        } else if (isCreditChecking == false && jobs == queueRestore) {
             isCreditChecking = true
         } else {
             isCreditChecking = true
