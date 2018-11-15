@@ -1,5 +1,7 @@
 const http = require("http");
 const saveMessage = require("../clients/saveMessage");
+const brake = require('../brakes')
+const util = require('util')
 
 const random = n => Math.floor(Math.random() * Math.floor(n));
 
@@ -13,8 +15,8 @@ module.exports = function(message, credit) {
       
       const postOptions = {
         // host: "exercise4_messageapp_1",
-        // host: "localhost",
-        host: "messageapp",
+        // host: "messageapp",
+        host: "localhost",
         port: 3000,
         path: "/message",
         method: "post",
@@ -25,72 +27,83 @@ module.exports = function(message, credit) {
         }
       };
 
-      let postReq = http.request(postOptions);
+      const httpRequest = (postOptions) => {
+        return new Promise(function(resolve, reject) {
+            var req = http.request(postOptions, function(res) {
+                if (res.statusCode === 200) {
+                saveMessage(
+                  {
+                    ...messageContent,
+                    status: "OK"
+                  },
+                  function(_result, error) {
+                    if (error) {
+                      console.log(error)
+                    } else {
+                      console.log(messageContent)
+                    }
+                  }
+                )
+                resolve(messageContent)
+                } else if (res.statusCode >= 500){
+                  saveMessage(
+                    {
+                      ...messageContent,
+                      status: "TIMEOUT"
+                    },
+                    function(_result, error) {
+                      if (error) {
+                        console.log(error)
+                      } else {
+                        console.log(messageContent)
+                      }
+                    }
+                  )
+                  reject(new Error('statusCode=' + res.statusCode));
+                }
+            });
 
-      postReq.on("response", postRes => {
-        if (postRes.statusCode === 200) {
-          // updateMessage
-          saveMessage(
-            {
-              ...messageContent,
-              status: "OK"
-            },
-            function(_result, error) {
-              if (error) {
-                console.log(error)
-              } else {
-                console.log(messageContent)
-              }
-            }
-          );
-        } else {
-          console.error("Error while sending message");
-          // updateMessage
-          saveMessage(
-            {
-              ...messageContent,
-              status: "ERROR"
-            },
-            () => {
-              console.log("Internal server error: SERVICE ERROR")
-            }
-          );
-        }
-      });
+            req.setTimeout(random(1000));
 
-      postReq.setTimeout(random(6000));
+            req.on("timeout", () => {
+            console.error("Timeout Exceeded!");
+            saveMessage(
+                  {
+                    ...messageContent,
+                    status: "TIMEOUT"
+                  },
+                  () => {
+                    console.log("Internal server error: TIMEOUT")
+                  }
+              );
+              reject(new Error('Timeout'))
+            });
 
-      postReq.on("timeout", () => {
-        console.error("Timeout Exceeded!");
-        postReq.abort();
-        saveMessage(
-          {
-            ...messageContent,
-            status: "TIMEOUT"
-          },
-          () => {
-            console.log("Internal server error: TIMEOUT")
-          }
-        );
-      });
+            req.write(postData);
+            req.end();
 
-      postReq.on("error", () => {
-        console.error("Error while sending message");
-        saveMessage(
-          {
-            ...messageContent,
-            status: "ERROR"
-          },
-          () => {
-            console.log("Internal server error: SERVICE ERROR")
-          }
-        );
-      });
+        })
+      };
 
-      postReq.write(messageJSON);
-      postReq.end();
+
+      const slaveCircuit = brake.slaveCircuit(httpRequest);
+
+      slaveCircuit.exec(postOptions)
+        .then((result) =>{
+          console.log(`result: ${result}`,util.inspect(result));
+        })
+        .catch(error =>{
+          console.error(`error: ${error}`);
+        });
+
+      } else {
+        console.log("No credit error")
+      }
+
+      // brake.on('snapshot', snapshot => {
+      //   console.log(`Stats received -> ${util.inspect(snapshot)}`);
+      // });
+
+      brake.isOpen()
       
-    } else {
-      console.log("No credit error")
-    }
 };
