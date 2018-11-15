@@ -1,31 +1,31 @@
 version: "3"
 services:
-  message:
-    build: message/
-    ports:
-      - "9010:9010"
-    links:
-      - messageapp
-      - mongodb_message
-      - replica_message
-      - redis
-    depends_on:
-      - messageapp
-      - mongodb_message
-      - replica_message
-      - redis
-  credit:
-    build: credit/
-    ports:
-      - "9020:9020"
-    links:
-      - mongodb_credit
-      - replica_credit
-      - redis
-    depends_on:
-      - mongodb_credit
-      - replica_credit
-      - redis
+  # message:
+  #   build: message/
+  #   ports:
+  #     - "9010:9010"
+  #   links:
+  #     - messageapp
+  #     - mongodb_message
+  #     - replica_message
+  #     - redis
+  #   depends_on:
+  #     - messageapp
+  #     - mongodb_message
+  #     - replica_message
+  #     - redis
+  # credit:
+  #   build: credit/
+  #   ports:
+  #     - "9020:9020"
+  #   links:
+  #     - mongodb_credit
+  #     - replica_credit
+  #     - redis
+  #   depends_on:
+  #     - mongodb_credit
+  #     - replica_credit
+  #     - redis
   messageapp:
     image: cabify/backend-bootcamp-messageapp:exercise10
     ports:
