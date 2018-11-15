@@ -14,7 +14,7 @@ const updateCreditTransaction = require("../transactions/updateCredit");
 const getCredit = require("./getCredit");
 
 creditCheckQueue.process(async (job, done) => {
-    console.log(job)
+    console.log(job.data)
     Promise.resolve(getCredit().then( credit => {
         done(null, credit)}))
 })

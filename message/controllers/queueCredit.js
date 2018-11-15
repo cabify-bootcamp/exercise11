@@ -28,9 +28,17 @@ function queueCreditCheck(req, res, next) {
         {
             if (isCreditChecking) {
             return creditCheckQueue.add(messageObj)
-            .then( () => Promise.resolve(saveMessage(messageObj)))
+            .then( () => 
+                Promise.resolve(saveMessage(messageObj,
+                    function (_result, error) {
+                        if (error) {
+                            console.log('Error 500.', error);
+                        } else {
+                            console.log('Successfully saved');
+                        }
+                    })))
             .then( () => {
-                if (brake.isClosed()) {
+                if (!brake.isOpen()) {
                     res.status(200).send(`Message send successfully, you can check the your message status using /messages/${uuid}/status`)
                 } else {
                     res.status(200).send(`Message service is having some delays, please check later using /messages/${uuid}/status`)
@@ -45,6 +53,7 @@ function queueCreditCheck(req, res, next) {
 
 function queueManager(queue) {
     return queue.count().then( (jobs) => {
+        console.log(jobs)
         if (jobs >= queueLimit) {
             isCreditChecking = false
         } else if (isCreditChecking == false && jobs == queueRestore) {

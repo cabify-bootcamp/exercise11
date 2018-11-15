@@ -10,11 +10,21 @@ const getMessages = require("./controllers/getMessages");
 const getHealth = require("./controllers/getHealth");
 const getVersion = require("./controllers/getVersion");
 const getMessageStatus = require("./controllers/getMessageStatus");
+const redis = require('redis')
+
+client = redis.createClient();
+
+client.flushdb( function (err, succeeded) {
+  console.log(succeeded); // will be true if successfull
+});
+
 var debug = require('debug')
 
 require("./controllers/queueTx");
 
 const app = express();
+
+
 
 const validator = new Validator({ allErrors: true });
 const { validate } = validator;
