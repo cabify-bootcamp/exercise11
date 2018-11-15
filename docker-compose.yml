@@ -1,52 +1,23 @@
 version: "3"
 services:
-
-  # service-v1:
-  #   image: mgomezb/message-v1
-  #   expose:
-  #     - 9007
-  #   environment:
-  #     - SERVICE_PORT=9007
-  #     - SERVICE_NAME=service-v1
+  # message:
+  #   build: message/
+  #   ports:
+  #     - "9010:9010"
   #   links:
   #     - messageapp
   #     - mongodb_message
   #     - replica_message
   #     - redis
-  #     - credit
-  #     - balancer
   #   depends_on:
-  #     - mongodb_message
-  #     - replica_message
-  #     - redis
-  #   deploy:
-  #     replicas: 5
-
-  # service-v2:
-  #   image: mgomezb/message-v2
-  #   expose:
-  #     - 9008
-  #   environment:
-  #     - SERVICE_PORT=9008
-  #     - SERVICE_NAME=service-v2
-  #   links:
   #     - messageapp
   #     - mongodb_message
   #     - replica_message
   #     - redis
-  #     - credit
-  #     - balancer
-  #   depends_on:
-  #     - mongodb_message
-  #     - replica_message
-  #     - redis
-
   # credit:
-  #   image: credit
-  #   ports: 
-  #     - "9017:9017"
-  #   environment:
-  #     - SERVICE_PORT=9017
+  #   build: credit/
+  #   ports:
+  #     - "9020:9020"
   #   links:
   #     - mongodb_credit
   #     - replica_credit
@@ -55,7 +26,6 @@ services:
   #     - mongodb_credit
   #     - replica_credit
   #     - redis
-
   messageapp:
     image: cabify/backend-bootcamp-messageapp:exercise10
     ports:
@@ -63,15 +33,14 @@ services:
 
   mongodb_credit:
     image: mongo
-    command: mongod --port 27017    
+    command: mongod --port 27017
     volumes:
       - ./credit/data/db:/credit/data/db
     ports:
       - 27017:27017
-
   replica_credit:
     image: mongo
-    command: mongod --port 27018    
+    command: mongod --port 27018
     volumes:
       - ./credit/data/replica:/credit/data/replica
     ports:
@@ -84,7 +53,6 @@ services:
       - ./message/data/db:/message/data/db
     ports:
       - 27027:27027
-
   replica_message:
     image: mongo
     command: mongod --port 27028
@@ -97,29 +65,3 @@ services:
     image: redis
     ports:
       - 6379:6379
-
-  # registrator:
-  #   image: gliderlabs/registrator
-  #   volumes:
-  #     - /var/run/docker.sock:/tmp/docker.sock
-  #   command: -internal consul://consul:8500
-  #   depends_on:
-  #     - consul
-  #   links:
-  #     - consul
-  
-  # consul:
-  #   image: consul
-  #   command: "agent -server -bootstrap -ui -client=0.0.0.0 -bind='{{ GetPrivateIP }}'"
-
-  # balancer:
-  #   image: haproxy:1.8-alpine
-  #   depends_on:
-  #     - registrator
-  #   links:
-  #     - registrator
-  #   volumes: 
-  #     - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
-  #   ports:
-  #     - 48151:48151
-
