@@ -19,6 +19,8 @@ creditCheckQueue.process(async (job, done) => {
         done(null, credit)}))
 })
 
+
+
 txQueue.process(async (job, done) => {
 
     return Promise.resolve(updateCreditTransaction(

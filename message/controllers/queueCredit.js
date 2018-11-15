@@ -5,10 +5,51 @@ const sendMessage = require('./sendMessage')
 const brake = require('../brakes')
 const creditCheckQueue = new Queue('creditCheckQueue', 'redis://127.0.0.1:6379');
 const creditCheckResponseQueue = new Queue('creditCheckResponseQueue', 'redis://127.0.0.1:6379');
+let isCreditChecking = true
 // const creditCheckQueue = new Queue('creditCheckQueue', 'redis://redis:6379');
 // const creditCheckResponseQueue = new Queue('creditCheckResponseQueue', 'redis://redis:6379');
-const isCreditChecking = true
 
+
+
+
+function queueCreditCheck(req, res, next) {
+
+    let uuid = uuidv4();
+    let messageObj = req.body;
+    messageObj.uuid = uuid;
+    messageObj.status = "PENDING"
+
+    queueManager(creditCheckQueue)
+    .then( () => 
+        {
+            if (isCreditChecking) {
+            return creditCheckQueue.add(messageObj)
+            .then( () => Promise.resolve(saveMessage(messageObj)))
+            .then( () => {
+                if (brake.isClosed()) {
+                    res.status(200).send(`Message send successfully, you can check the your message status using /messages/${uuid}/status`)
+                } else {
+                    res.status(200).send(`Message service is having some delays, please check later using /messages/${uuid}/status`)
+                }
+            })
+            } else {
+                console.log(isCreditChecking)
+                res.status(200).send(`Service is full, try again later`)
+            }
+        }) 
+}
+
+function queueManager(queue) {
+    return queue.count().then( (jobs) => {
+        if (jobs >= 10) {
+            isCreditChecking = false
+        } else if (isCreditChecking == false && jobs == 5) {
+            isCreditChecking = true
+        } else {
+            isCreditChecking = true
+        }
+    })
+}
 
 brake.on('circuitOpen', () => {
     console.log('----------Circuit Opened--------------');
@@ -24,38 +65,6 @@ brake.on('circuitClosed', () => {
     });
 });
 
-function queueCreditCheck(req, res, next) {
-
-    let uuid = uuidv4();
-    let messageObj = req.body;
-    messageObj.uuid = uuid;
-    messageObj.status = "PENDING"
-
-    queueCount(creditCheckQueue)
-    .then( jobs => 
-        {
-            if (jobs <= 10) {
-            return creditCheckQueue.add(messageObj)
-            .then( () => res.status(200).send(`Message send successfully, you can check the your message status using /messages/${uuid}/status`))
-            .then( () => saveMessage(
-                messageObj,
-                function (_result, error) {
-                    if (error) {
-                        console.log('Error 500.', error);
-                    } else {
-                        console.log('Successfully saved');
-                    }
-            }))
-            } else {
-                res.status(200).send(`Service is full, try again later`)
-            }
-        
-        }) 
-}
-
-function queueCount(queue) {
-    return queue.count()
-}
 creditCheckResponseQueue.process(async (job, done) => {
     sendMessage(job.data.messageParams, job.data.credit)
 })
