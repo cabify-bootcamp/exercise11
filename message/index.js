@@ -10,6 +10,7 @@ const getMessages = require("./controllers/getMessages");
 const getHealth = require("./controllers/getHealth");
 const getVersion = require("./controllers/getVersion");
 const getMessageStatus = require("./controllers/getMessageStatus");
+var debug = require('debug')
 
 require("./controllers/queueTx");
 
@@ -66,4 +67,5 @@ app.use(function(err, req, res, next) {
 
 app.listen(service_port, function() {
   console.log(`App started on PORT ${service_port}`);
+  debug('listening')
 });

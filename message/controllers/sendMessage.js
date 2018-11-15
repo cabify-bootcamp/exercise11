@@ -95,8 +95,6 @@ module.exports = function(message, credit) {
         .catch(error =>{
           console.error(`error: ${util.inspect(error)}`);
         });
-
-      brake.isOpen()
     
       } else {
         updateMessage({
@@ -107,10 +105,5 @@ module.exports = function(message, credit) {
           console.log("NO CREDIT");
         })
       }
-
-      // brake.on('snapshot', snapshot => {
-      //   console.log(`Stats received -> ${util.inspect(snapshot)}`);
-      // });
-
 
 };

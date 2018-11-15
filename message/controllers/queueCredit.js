@@ -3,12 +3,11 @@ const Queue = require('bull');
 const saveMessage = require('../transactions/saveMessage')
 const sendMessage = require('./sendMessage')
 const brake = require('../brakes')
-
-
 const creditCheckQueue = new Queue('creditCheckQueue', 'redis://127.0.0.1:6379');
 const creditCheckResponseQueue = new Queue('creditCheckResponseQueue', 'redis://127.0.0.1:6379');
 // const creditCheckQueue = new Queue('creditCheckQueue', 'redis://redis:6379');
 // const creditCheckResponseQueue = new Queue('creditCheckResponseQueue', 'redis://redis:6379');
+const isCreditChecking = true
 
 
 brake.on('circuitOpen', () => {
@@ -32,21 +31,31 @@ function queueCreditCheck(req, res, next) {
     messageObj.uuid = uuid;
     messageObj.status = "PENDING"
 
-    saveMessage(
-        messageObj,
-        function (_result, error) {
-            if (error) {
-                console.log('Error 500.', error);
+    queueCount(creditCheckQueue)
+    .then( jobs => 
+        {
+            if (jobs <= 10) {
+            return creditCheckQueue.add(messageObj)
+            .then( () => res.status(200).send(`Message send successfully, you can check the your message status using /messages/${uuid}/status`))
+            .then( () => saveMessage(
+                messageObj,
+                function (_result, error) {
+                    if (error) {
+                        console.log('Error 500.', error);
+                    } else {
+                        console.log('Successfully saved');
+                    }
+            }))
             } else {
-                console.log('Successfully saved');
+                res.status(200).send(`Service is full, try again later`)
             }
-        }
-    )
-
-    return creditCheckQueue.add(messageObj).then( () => res.status(200).send(`Message send successfully, you can check the your message status using /messages/${uuid}/status`))
-
+        
+        }) 
 }
 
+function queueCount(queue) {
+    return queue.count()
+}
 creditCheckResponseQueue.process(async (job, done) => {
     sendMessage(job.data.messageParams, job.data.credit)
 })
@@ -54,6 +63,7 @@ creditCheckResponseQueue.process(async (job, done) => {
 creditCheckResponseQueue.on('completed', (job, result) => {
     console.log(`Credit Check Job completed with result: ${result}`);
 })
+
 
 
 module.exports = { queueCreditCheck }
