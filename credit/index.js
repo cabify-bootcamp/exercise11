@@ -40,6 +40,7 @@ app.get(
   getCredit
 );
 
+
 app.use(function(err, req, res, next) {
   console.log(res.body);
   if (err instanceof ValidationError) {

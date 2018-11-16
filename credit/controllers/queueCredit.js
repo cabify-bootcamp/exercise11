@@ -2,13 +2,13 @@
 
 const Queue = require('bull');
 
-const creditCheckQueue = new Queue('creditCheckQueue', 'redis://127.0.0.1:6379');
-const creditCheckResponseQueue = new Queue('creditCheckResponseQueue', 'redis://127.0.0.1:6379');
-const txQueue = new Queue('txQueue', 'redis://127.0.0.1:6379');
+// const creditCheckQueue = new Queue('creditCheckQueue', 'redis://127.0.0.1:6379');
+// const creditCheckResponseQueue = new Queue('creditCheckResponseQueue', 'redis://127.0.0.1:6379');
+// const txQueue = new Queue('txQueue', 'redis://127.0.0.1:6379');
 
-// const creditCheckQueue = new Queue('creditCheckQueue', 'redis://redis:6379');
-// const creditCheckResponseQueue = new Queue('creditCheckResponseQueue', 'redis://redis:6379');
-// const txQueue = new Queue('txQueue', 'redis://redis:6379');
+const creditCheckQueue = new Queue('creditCheckQueue', 'redis://redis:6379');
+const creditCheckResponseQueue = new Queue('creditCheckResponseQueue', 'redis://redis:6379');
+const txQueue = new Queue('txQueue', 'redis://redis:6379');
 
 const updateCreditTransaction = require("../transactions/updateCredit");
 const getCredit = require("../clients/getCredit");

@@ -5,26 +5,19 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const { Validator, ValidationError } = require("express-json-validator-middleware");
 const { queueCreditCheck }  = require("./controllers/queueCredit");
-const service_port = process.env.SERVICE_PORT || 9007
+const service_port = process.env.SERVICE_PORT || 9010
 const getMessages = require("./controllers/getMessages");
 const getHealth = require("./controllers/getHealth");
 const getVersion = require("./controllers/getVersion");
 const getMessageStatus = require("./controllers/getMessageStatus");
-// const redis = require('redis')
-
-// client = redis.createClient();
-
-// client.flushdb( function (err, succeeded) {
-//   console.log(succeeded, 'IN2'); // will be true if successfull
-// });
+const metrics = require("./controllers/metrics");
+const Prometheus = require('./prom');  
 
 var debug = require('debug')
 
 require("./controllers/queueTx");
 
 const app = express();
-
-
 
 const validator = new Validator({ allErrors: true });
 const { validate } = validator;
@@ -74,6 +67,13 @@ app.use(function(err, req, res, next) {
   }
 });
 
+app.use(Prometheus.requestCounters);  
+app.use(Prometheus.responseCounters);
+
+
+Prometheus.injectMetricsRoute(app);
+
+Prometheus.startCollection(); 
 
 app.listen(service_port, function() {
   console.log(`App started on PORT ${service_port}`);

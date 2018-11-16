@@ -7,12 +7,12 @@ const Queue = require('bull');
 const saveMessage = require('../transactions/saveMessage')
 const sendMessage = require('./sendMessage')
 const brake = require('../brakes')
-const creditCheckQueue = new Queue('creditCheckQueue', 'redis://127.0.0.1:6379');
-const creditCheckResponseQueue = new Queue('creditCheckResponseQueue', 'redis://127.0.0.1:6379');
-let isCreditChecking = true
-// const creditCheckQueue = new Queue('creditCheckQueue', 'redis://redis:6379');
-// const creditCheckResponseQueue = new Queue('creditCheckResponseQueue', 'redis://redis:6379');
+// const creditCheckQueue = new Queue('creditCheckQueue', 'redis://127.0.0.1:6379');
+// const creditCheckResponseQueue = new Queue('creditCheckResponseQueue', 'redis://127.0.0.1:6379');
+const creditCheckQueue = new Queue('creditCheckQueue', 'redis://redis:6379');
+const creditCheckResponseQueue = new Queue('creditCheckResponseQueue', 'redis://redis:6379');
 const logger = require('../logger')
+let isCreditChecking = true
 
 
 

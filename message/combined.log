@@ -81,3 +81,118 @@
 {"level":"info","message":"Charging for message","timestamp":"2018-11-15 14:51:19"}
 {"level":"info","message":"Successfull message update with uuid: 53480401-a3a3-4031-90d3-5c53efe4094e","timestamp":"2018-11-15 14:51:19"}
 {"level":"info","message":"Message replica updated with uuid: 53480401-a3a3-4031-90d3-5c53efe4094e","timestamp":"2018-11-15 14:51:19"}
+{"level":"info","message":"Pending jobs: 0","timestamp":"2018-11-15 15:22:37"}
+{"level":"info","message":"Credit received, proceeding to send message with uuid: 53480401-a3a3-4031-90d3-5c53efe4094e","timestamp":"2018-11-15 15:22:54"}
+{"level":"error","message":"Message service has timeout on message with uuid: 53480401-a3a3-4031-90d3-5c53efe4094e","timestamp":"2018-11-15 15:22:55"}
+{"level":"warn","message":"Rejecting, Service timeout by messageapp with uuid: 53480401-a3a3-4031-90d3-5c53efe4094e","timestamp":"2018-11-15 15:22:55"}
+{"level":"info","message":"http request rejected for message with: 53480401-a3a3-4031-90d3-5c53efe4094e","timestamp":"2018-11-15 15:22:55"}
+{"level":"error","message":"Internal server error, message uuid: 53480401-a3a3-4031-90d3-5c53efe4094e","timestamp":"2018-11-15 15:22:55"}
+{"level":"info","message":"Message replica updated with uuid: 53480401-a3a3-4031-90d3-5c53efe4094e","timestamp":"2018-11-15 15:22:55"}
+{"level":"info","message":"Proceeding to charge message with uuid: 53480401-a3a3-4031-90d3-5c53efe4094e","timestamp":"2018-11-15 15:22:55"}
+{"level":"info","message":"Charging for message","timestamp":"2018-11-15 15:22:55"}
+{"level":"info","message":"Successfull message update with uuid: 53480401-a3a3-4031-90d3-5c53efe4094e","timestamp":"2018-11-15 15:22:55"}
+{"level":"info","message":"Message replica updated with uuid: 53480401-a3a3-4031-90d3-5c53efe4094e","timestamp":"2018-11-15 15:22:55"}
+{"level":"info","message":"Credit received, proceeding to send message with uuid: f462ebf6-faff-49ad-8862-44c2de2ea243","timestamp":"2018-11-15 15:56:19"}
+{"level":"error","message":"Message service has timeout on message with uuid: f462ebf6-faff-49ad-8862-44c2de2ea243","timestamp":"2018-11-15 15:56:20"}
+{"level":"warn","message":"Rejecting, Service timeout by messageapp with uuid: f462ebf6-faff-49ad-8862-44c2de2ea243","timestamp":"2018-11-15 15:56:20"}
+{"level":"info","message":"http request rejected for message with: f462ebf6-faff-49ad-8862-44c2de2ea243","timestamp":"2018-11-15 15:56:20"}
+{"level":"error","message":"Internal server error, message uuid: f462ebf6-faff-49ad-8862-44c2de2ea243","timestamp":"2018-11-15 15:56:20"}
+{"level":"info","message":"Message replica updated with uuid: f462ebf6-faff-49ad-8862-44c2de2ea243","timestamp":"2018-11-15 15:56:20"}
+{"level":"warn","message":"Rejecting Message timeout by messageapp with uuid: f462ebf6-faff-49ad-8862-44c2de2ea243","timestamp":"2018-11-15 15:56:21"}
+{"level":"info","message":"Successfully changed status to timeout, message uuid: f462ebf6-faff-49ad-8862-44c2de2ea243","timestamp":"2018-11-15 15:56:21"}
+{"level":"info","message":"Message replica updated with uuid: f462ebf6-faff-49ad-8862-44c2de2ea243","timestamp":"2018-11-15 15:56:21"}
+{"level":"info","message":"Credit received, proceeding to send message with uuid: 23b92cfc-5219-45f2-a95f-8e53d20cb04a","timestamp":"2018-11-15 15:56:32"}
+{"level":"error","message":"Message service has timeout on message with uuid: 23b92cfc-5219-45f2-a95f-8e53d20cb04a","timestamp":"2018-11-15 15:56:32"}
+{"level":"warn","message":"Rejecting, Service timeout by messageapp with uuid: 23b92cfc-5219-45f2-a95f-8e53d20cb04a","timestamp":"2018-11-15 15:56:32"}
+{"level":"info","message":"http request rejected for message with: 23b92cfc-5219-45f2-a95f-8e53d20cb04a","timestamp":"2018-11-15 15:56:32"}
+{"level":"info","message":"Message saved successfully with uuid: 23b92cfc-5219-45f2-a95f-8e53d20cb04a","timestamp":"2018-11-15 15:56:32"}
+{"level":"error","message":"Internal server error, message uuid: 23b92cfc-5219-45f2-a95f-8e53d20cb04a","timestamp":"2018-11-15 15:56:32"}
+{"level":"info","message":"Message replicated succesfully with uuid: 23b92cfc-5219-45f2-a95f-8e53d20cb04a","timestamp":"2018-11-15 15:56:32"}
+{"level":"warn","message":"Rejecting Message timeout by messageapp with uuid: 23b92cfc-5219-45f2-a95f-8e53d20cb04a","timestamp":"2018-11-15 15:56:32"}
+{"level":"info","message":"Successfully changed status to timeout, message uuid: 23b92cfc-5219-45f2-a95f-8e53d20cb04a","timestamp":"2018-11-15 15:56:32"}
+{"level":"info","message":"Message replica updated with uuid: 23b92cfc-5219-45f2-a95f-8e53d20cb04a","timestamp":"2018-11-15 15:56:32"}
+{"level":"info","message":"Credit received, proceeding to send message with uuid: 23b92cfc-5219-45f2-a95f-8e53d20cb04a","timestamp":"2018-11-15 15:57:21"}
+{"level":"error","message":"Message service has timeout on message with uuid: 23b92cfc-5219-45f2-a95f-8e53d20cb04a","timestamp":"2018-11-15 15:57:21"}
+{"level":"warn","message":"Rejecting, Service timeout by messageapp with uuid: 23b92cfc-5219-45f2-a95f-8e53d20cb04a","timestamp":"2018-11-15 15:57:21"}
+{"level":"info","message":"http request rejected for message with: 23b92cfc-5219-45f2-a95f-8e53d20cb04a","timestamp":"2018-11-15 15:57:21"}
+{"level":"error","message":"Internal server error, message uuid: 23b92cfc-5219-45f2-a95f-8e53d20cb04a","timestamp":"2018-11-15 15:57:21"}
+{"level":"info","message":"Message replica updated with uuid: 23b92cfc-5219-45f2-a95f-8e53d20cb04a","timestamp":"2018-11-15 15:57:21"}
+{"level":"info","message":"Pending jobs: 0","timestamp":"2018-11-15 15:58:12"}
+{"level":"info","message":"Circuit closed, message send","timestamp":"2018-11-15 15:58:12"}
+{"level":"info","message":"Message saved successfully with uuid: 9a3f4e41-405e-4053-822c-f42e9a86a47e","timestamp":"2018-11-15 15:58:13"}
+{"level":"info","message":"Message has been saved, ready to be processed","timestamp":"2018-11-15 15:58:13"}
+{"level":"info","message":"Message replicated succesfully with uuid: 9a3f4e41-405e-4053-822c-f42e9a86a47e","timestamp":"2018-11-15 15:58:13"}
+{"level":"info","message":"Credit received, proceeding to send message with uuid: 9a3f4e41-405e-4053-822c-f42e9a86a47e","timestamp":"2018-11-15 16:02:11"}
+{"level":"error","message":"Message service has timeout on message with uuid: 9a3f4e41-405e-4053-822c-f42e9a86a47e","timestamp":"2018-11-15 16:02:11"}
+{"level":"warn","message":"Rejecting, Service timeout by messageapp with uuid: 9a3f4e41-405e-4053-822c-f42e9a86a47e","timestamp":"2018-11-15 16:02:11"}
+{"level":"info","message":"http request rejected for message with: 9a3f4e41-405e-4053-822c-f42e9a86a47e","timestamp":"2018-11-15 16:02:11"}
+{"level":"error","message":"Internal server error, message uuid: 9a3f4e41-405e-4053-822c-f42e9a86a47e","timestamp":"2018-11-15 16:02:11"}
+{"level":"info","message":"Message replica updated with uuid: 9a3f4e41-405e-4053-822c-f42e9a86a47e","timestamp":"2018-11-15 16:02:11"}
+{"level":"info","message":"Proceeding to charge message with uuid: 9a3f4e41-405e-4053-822c-f42e9a86a47e","timestamp":"2018-11-15 16:02:12"}
+{"level":"info","message":"Charging for message","timestamp":"2018-11-15 16:02:12"}
+{"level":"info","message":"Successfull message update with uuid: 9a3f4e41-405e-4053-822c-f42e9a86a47e","timestamp":"2018-11-15 16:02:12"}
+{"level":"info","message":"Message replica updated with uuid: 9a3f4e41-405e-4053-822c-f42e9a86a47e","timestamp":"2018-11-15 16:02:12"}
+{"level":"info","message":"Credit received, proceeding to send message with uuid: 9a3f4e41-405e-4053-822c-f42e9a86a47e","timestamp":"2018-11-15 16:09:06"}
+{"level":"error","message":"Message service has timeout on message with uuid: 9a3f4e41-405e-4053-822c-f42e9a86a47e","timestamp":"2018-11-15 16:09:06"}
+{"level":"warn","message":"Rejecting, Service timeout by messageapp with uuid: 9a3f4e41-405e-4053-822c-f42e9a86a47e","timestamp":"2018-11-15 16:09:06"}
+{"level":"info","message":"http request rejected for message with: 9a3f4e41-405e-4053-822c-f42e9a86a47e","timestamp":"2018-11-15 16:09:06"}
+{"level":"error","message":"Internal server error, message uuid: 9a3f4e41-405e-4053-822c-f42e9a86a47e","timestamp":"2018-11-15 16:09:06"}
+{"level":"info","message":"Message replica updated with uuid: 9a3f4e41-405e-4053-822c-f42e9a86a47e","timestamp":"2018-11-15 16:09:06"}
+{"level":"info","message":"Starting the collection of metrics, the metrics are available on /metrics","timestamp":"2018-11-15 16:13:07"}
+{"level":"info","message":"Starting the collection of metrics, the metrics are available on /metrics","timestamp":"2018-11-15 16:14:30"}
+{"level":"info","message":"Starting the collection of metrics, the metrics are available on /metrics","timestamp":"2018-11-15 16:14:39"}
+{"level":"info","message":"Starting the collection of metrics, the metrics are available on /metrics","timestamp":"2018-11-15 16:33:14"}
+{"level":"info","message":"Starting the collection of metrics, the metrics are available on /metrics","timestamp":"2018-11-15 16:33:33"}
+{"level":"info","message":"Starting the collection of metrics, the metrics are available on /metrics","timestamp":"2018-11-15 16:36:29"}
+{"level":"info","message":"Starting the collection of metrics, the metrics are available on /metrics","timestamp":"2018-11-15 16:41:03"}
+{"level":"info","message":"Starting the collection of metrics, the metrics are available on /metrics","timestamp":"2018-11-15 16:41:23"}
+{"level":"info","message":"Starting the collection of metrics, the metrics are available on /metrics","timestamp":"2018-11-15 16:41:41"}
+{"level":"info","message":"Pending jobs: 0","timestamp":"2018-11-15 16:56:29"}
+{"level":"info","message":"Circuit closed, message send","timestamp":"2018-11-15 16:56:29"}
+{"level":"info","message":"Message saved successfully with uuid: 938110b1-5a52-4a8d-8b2b-f5e4313d6df1","timestamp":"2018-11-15 16:56:29"}
+{"level":"info","message":"Message has been saved, ready to be processed","timestamp":"2018-11-15 16:56:29"}
+{"level":"info","message":"Message replicated succesfully with uuid: 938110b1-5a52-4a8d-8b2b-f5e4313d6df1","timestamp":"2018-11-15 16:56:29"}
+{"level":"info","message":"Pending jobs: 1","timestamp":"2018-11-15 16:56:30"}
+{"level":"info","message":"Circuit closed, message send","timestamp":"2018-11-15 16:56:30"}
+{"level":"info","message":"Message saved successfully with uuid: 0f7836a1-7075-45f8-bf24-28fc2285f1f3","timestamp":"2018-11-15 16:56:30"}
+{"level":"info","message":"Message has been saved, ready to be processed","timestamp":"2018-11-15 16:56:30"}
+{"level":"info","message":"Message replicated succesfully with uuid: 0f7836a1-7075-45f8-bf24-28fc2285f1f3","timestamp":"2018-11-15 16:56:30"}
+{"level":"info","message":"Pending jobs: 2","timestamp":"2018-11-15 16:56:31"}
+{"level":"info","message":"Circuit closed, message send","timestamp":"2018-11-15 16:56:31"}
+{"level":"info","message":"Message saved successfully with uuid: e54d063b-b926-41c4-864b-92be018b62fe","timestamp":"2018-11-15 16:56:31"}
+{"level":"info","message":"Message has been saved, ready to be processed","timestamp":"2018-11-15 16:56:31"}
+{"level":"info","message":"Message replicated succesfully with uuid: e54d063b-b926-41c4-864b-92be018b62fe","timestamp":"2018-11-15 16:56:31"}
+{"level":"info","message":"Pending jobs: 3","timestamp":"2018-11-15 16:56:32"}
+{"level":"info","message":"Circuit closed, message send","timestamp":"2018-11-15 16:56:32"}
+{"level":"info","message":"Message saved successfully with uuid: d9b47b7e-8bc1-4a46-b653-27da47de8098","timestamp":"2018-11-15 16:56:32"}
+{"level":"info","message":"Message has been saved, ready to be processed","timestamp":"2018-11-15 16:56:32"}
+{"level":"info","message":"Message replicated succesfully with uuid: d9b47b7e-8bc1-4a46-b653-27da47de8098","timestamp":"2018-11-15 16:56:32"}
+{"level":"info","message":"Starting the collection of metrics, the metrics are available on /metrics","timestamp":"2018-11-15 16:57:11"}
+{"level":"info","message":"Credit received, proceeding to send message with uuid: 938110b1-5a52-4a8d-8b2b-f5e4313d6df1","timestamp":"2018-11-15 16:57:11"}
+{"level":"error","message":"Message service has timeout on message with uuid: 938110b1-5a52-4a8d-8b2b-f5e4313d6df1","timestamp":"2018-11-15 16:57:12"}
+{"level":"warn","message":"Rejecting, Service timeout by messageapp with uuid: 938110b1-5a52-4a8d-8b2b-f5e4313d6df1","timestamp":"2018-11-15 16:57:12"}
+{"level":"info","message":"http request rejected for message with: 938110b1-5a52-4a8d-8b2b-f5e4313d6df1","timestamp":"2018-11-15 16:57:12"}
+{"level":"error","message":"Internal server error, message uuid: 938110b1-5a52-4a8d-8b2b-f5e4313d6df1","timestamp":"2018-11-15 16:57:12"}
+{"level":"info","message":"Message replica updated with uuid: 938110b1-5a52-4a8d-8b2b-f5e4313d6df1","timestamp":"2018-11-15 16:57:12"}
+{"level":"info","message":"Proceeding to charge message with uuid: 938110b1-5a52-4a8d-8b2b-f5e4313d6df1","timestamp":"2018-11-15 16:57:25"}
+{"level":"info","message":"Charging for message","timestamp":"2018-11-15 16:57:25"}
+{"level":"info","message":"Successfull message update with uuid: 938110b1-5a52-4a8d-8b2b-f5e4313d6df1","timestamp":"2018-11-15 16:57:25"}
+{"level":"info","message":"Message replica updated with uuid: 938110b1-5a52-4a8d-8b2b-f5e4313d6df1","timestamp":"2018-11-15 16:57:25"}
+{"level":"info","message":"Starting the collection of metrics, the metrics are available on /metrics","timestamp":"2018-11-15 17:00:01"}
+{"level":"info","message":"Credit received, proceeding to send message with uuid: 0f7836a1-7075-45f8-bf24-28fc2285f1f3","timestamp":"2018-11-15 17:00:01"}
+{"level":"error","message":"Message service has timeout on message with uuid: 0f7836a1-7075-45f8-bf24-28fc2285f1f3","timestamp":"2018-11-15 17:00:02"}
+{"level":"warn","message":"Rejecting, Service timeout by messageapp with uuid: 0f7836a1-7075-45f8-bf24-28fc2285f1f3","timestamp":"2018-11-15 17:00:02"}
+{"level":"info","message":"http request rejected for message with: 0f7836a1-7075-45f8-bf24-28fc2285f1f3","timestamp":"2018-11-15 17:00:02"}
+{"level":"error","message":"Internal server error, message uuid: 0f7836a1-7075-45f8-bf24-28fc2285f1f3","timestamp":"2018-11-15 17:00:02"}
+{"level":"info","message":"Message replica updated with uuid: 0f7836a1-7075-45f8-bf24-28fc2285f1f3","timestamp":"2018-11-15 17:00:02"}
+{"level":"info","message":"Proceeding to charge message with uuid: 0f7836a1-7075-45f8-bf24-28fc2285f1f3","timestamp":"2018-11-15 17:00:13"}
+{"level":"info","message":"Charging for message","timestamp":"2018-11-15 17:00:13"}
+{"level":"info","message":"Successfull message update with uuid: 0f7836a1-7075-45f8-bf24-28fc2285f1f3","timestamp":"2018-11-15 17:00:13"}
+{"level":"info","message":"Message replica updated with uuid: 0f7836a1-7075-45f8-bf24-28fc2285f1f3","timestamp":"2018-11-15 17:00:13"}
+{"level":"info","message":"Starting the collection of metrics, the metrics are available on /metrics","timestamp":"2018-11-15 17:14:48"}
+{"level":"info","message":"Credit received, proceeding to send message with uuid: 938110b1-5a52-4a8d-8b2b-f5e4313d6df1","timestamp":"2018-11-15 17:14:49"}
+{"level":"info","message":"Proceeding to charge message with uuid: 938110b1-5a52-4a8d-8b2b-f5e4313d6df1","timestamp":"2018-11-15 17:14:49"}
+{"level":"info","message":"Charging for message","timestamp":"2018-11-15 17:14:49"}
+{"level":"info","message":"http request resolved for message with: 938110b1-5a52-4a8d-8b2b-f5e4313d6df1","timestamp":"2018-11-15 17:14:49"}
+{"level":"info","message":"Successfull message update with uuid: 938110b1-5a52-4a8d-8b2b-f5e4313d6df1","timestamp":"2018-11-15 17:14:49"}
+{"level":"info","message":"Message replica updated with uuid: 938110b1-5a52-4a8d-8b2b-f5e4313d6df1","timestamp":"2018-11-15 17:14:49"}
