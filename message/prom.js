@@ -51,7 +51,7 @@ module.exports.requestCounters = function (req, res, next) {
 module.exports.responseCounters = ResponseTime(function (req, res, time) {  
     const responseTimeInMs = Date.now() - res.locals.startEpoch
     if(req.url != '/metrics') {
-        requestDurationMs.labels(req.method, req.route.path, res.statusCode).observe(responseTimeInMs)
+        requestDurationMs.labels(req.method, req.route, res.statusCode).observe(responseTimeInMs)
         responses.labels(req.method, req.url, res.statusCode).observe(time);
     }
 
