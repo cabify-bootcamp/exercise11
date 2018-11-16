@@ -15,11 +15,10 @@ const getCredit = require("../clients/getCredit");
 
 creditCheckQueue.process(async (job, done) => {
     Promise.resolve(getCredit().then( credit => {
-        amount = credit[0].amount
-        done(null, amount)}))
+        if (credit[0].amount !== undefined) {
+            done(null, credit[0].amount)
+        }}))
 })
-
-
 
 txQueue.process(async (job, done) => {
 
@@ -43,7 +42,7 @@ txQueue.process(async (job, done) => {
 })
 
 creditCheckQueue.on('completed', (job, result) => {
-
+    console.log(result)
     let messageParams = job.data
     let credit = result
     message = JSON.stringify(messageParams)
@@ -73,3 +72,8 @@ txQueue.on('drained', function () {
 });
 
 
+function queueCounter(queue) {
+    return queue.count().then( (jobs) => {
+        console.log('info', `Pending jobs: ${jobs}`)
+    })
+}

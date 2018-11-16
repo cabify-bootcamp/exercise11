@@ -10,7 +10,7 @@ module.exports = function(message, credit) {
   const messageContent = message
   const postData = JSON.stringify(message);
   let current_credit = credit
-  
+    console.log("-------------", credit)
   
 
     if (current_credit > 0) {
@@ -19,7 +19,7 @@ module.exports = function(message, credit) {
         // host: "exercise4_messageapp_1",
         host: "messageapp",
         // host: "localhost",
-        port: 3010,
+        port: 3000,
         path: "/message",
         method: "post",
         json: true,
@@ -32,6 +32,7 @@ module.exports = function(message, credit) {
       const httpRequest = (postOptions) => {
         return new Promise(function(resolve, reject) {
             var req = http.request(postOptions, function(res) {
+                console.log(res.statusCode)
                 if (res.statusCode === 200) {
                 saveMessage(
                   {
@@ -93,7 +94,7 @@ module.exports = function(message, credit) {
       const slaveCircuit = brake.slaveCircuit(httpRequest);
 
       slaveCircuit.exec(postOptions)
-        .then((result) =>{
+        .then(result =>{
           logger.log('info', `http request resolved for message with: ${messageContent.uuid}`)
         })
         .catch(error =>{

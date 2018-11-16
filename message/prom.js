@@ -9,7 +9,7 @@ var logger = require('./logger');
 module.exports.httpRequestDurationMicroseconds = requestDurationMs = new Histogram({
     name: 'http_request_duration_ms',
     help: 'Duration of HTTP requests in ms',
-    labelNames: ['method', 'route', 'code'],
+    labelNames: ['method', 'route', 'code', 'path'],
     buckets: [0.10, 5, 15, 50, 100, 200, 300, 400, 500]
   })
 
@@ -51,7 +51,7 @@ module.exports.requestCounters = function (req, res, next) {
 module.exports.responseCounters = ResponseTime(function (req, res, time) {  
     const responseTimeInMs = Date.now() - res.locals.startEpoch
     if(req.url != '/metrics') {
-        requestDurationMs.labels(req.method, req.route, res.statusCode).observe(responseTimeInMs)
+        requestDurationMs.labels(req.method, req.route, res.statusCode, req.path).observe(responseTimeInMs)
         responses.labels(req.method, req.url, res.statusCode).observe(time);
     }
 

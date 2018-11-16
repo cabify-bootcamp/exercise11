@@ -10,7 +10,6 @@ const getMessages = require("./controllers/getMessages");
 const getHealth = require("./controllers/getHealth");
 const getVersion = require("./controllers/getVersion");
 const getMessageStatus = require("./controllers/getMessageStatus");
-const metrics = require("./controllers/metrics");
 const Prometheus = require('./prom');  
 
 var debug = require('debug')

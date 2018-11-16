@@ -3,7 +3,7 @@ services:
   grafana:
     image: grafana/grafana:5.1.0
     ports:
-      - "3000:3000"
+      - "3010:3000"
   message:
     build: message/
     ports:
@@ -38,7 +38,7 @@ services:
   messageapp:
     image: cabify/backend-bootcamp-messageapp:exercise10
     ports:
-      - "3010:3010"
+      - "3000:3000"
 
   mongodb_credit:
     image: mongo

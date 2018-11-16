@@ -12,6 +12,7 @@ const brake = require('../brakes')
 const creditCheckQueue = new Queue('creditCheckQueue', 'redis://redis:6379');
 const creditCheckResponseQueue = new Queue('creditCheckResponseQueue', 'redis://redis:6379');
 const logger = require('../logger')
+const util = require('util')
 let isCreditChecking = true
 
 
@@ -68,6 +69,13 @@ function queueManager(queue) {
 
 }
 
+
+function queueCounter(queue) {
+    return queue.count().then( (jobs) => {
+        console.log('info', `Pending jobs: ${jobs}`)
+    })
+}
+
 brake.on('circuitOpen', () => {
     logger.log('warn', 'Circuit has opened')
     creditCheckQueue.pause().then(function(){
@@ -77,19 +85,27 @@ brake.on('circuitOpen', () => {
   
 brake.on('circuitClosed', () => {
     logger.log('warn', 'Circuit has closed')
-    creditCheckQueue.resumed().then(function(){
+    creditCheckQueue.resume().then(function(){
         logger.log('warn', 'Credit Check Jobs are resumed')
     });
 });
 
 creditCheckResponseQueue.process(async (job, done) => {
+    queueCounter(creditCheckResponseQueue)
+    console.log("---------------", job.data, "--------------------")
     sendMessage(job.data.messageParams, job.data.credit)
+    done(null, 'done')
 })
 
 creditCheckResponseQueue.on('completed', (job, result) => {
     console.log(`Credit Check Job completed with result: ${result}`);
 })
 
-
+// brake.on("snapshot", snapshot => {
+// 	logger.log('debug',{
+// 		message: `Circuit open -> ${util.inspect(snapshot.open)}`,
+// 		label: 'Message service'
+// 	});
+// });
 
 module.exports = { queueCreditCheck }
