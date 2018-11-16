@@ -1,53 +1,51 @@
-# Ejercicio 10
+# Ejercicio 11
 
 ## Introducción
 
-Hemos avanzado mucho en la construcción de un sistema robusto. Tenemos réplicas, eventos, sistemas de colas, alta disponibilidad... pero a pesar de todo, aún podemos tener problemas graves en nuestro servicio. Los servicios de los que depende pueden saturarse por diferentes motivos: fallos, exceso de carga, etc.
-Como hemos visto, incluso en estas situaciones se pueden emplear algunas técnicas para paliar o minimizar los problemas. En este ejercicio vamos a trabajar en un par de casos prácticos, y aplicaremos mecanismos de backpressure.
+Ya tenemos nuestra aplicación prácticamente terminada. Es el momento de considerar cómo vamos a monitorizar, detectar y reaccionar ante problemas en producción.
 
-### 1 - Actualizar el servicio externo
+En este ejercicio exploraremos la observabilidad de nuestro sistema. Mejoraremos el formato de nuestros logs, reportaremos métricas a un panel de analíticas y analizaremos el comportamiento entre servicios mediante el uso de trazas distribuidas.
 
-Para este ejercicio, vamos a utilizar una versión diferente de `messageapp`.
-Esta versión nos permitirá simular los problemas que queremos mitigar.
+### 1 - Estandarizando el formato de los logs
 
-Para ello, tendremos que modificar la imagen de `messageapp` en el `docker-compose.yml` por `cabify/backend-bootcamp-messageapp:exercise10`.
+Reportar información es un buen comienzo, sin embargo no es suficiente. Los logs han de poder ser clasificados y analizados en un futuro de una manera eficiente. El formato de los logs ha de estandarizarse para almacenarlos, indexarlos y buscar en ellos de manera más eficiente.
 
-### 2 - Circuit breaker
+- Estandarizar el formato de logs mediante el uso de una librería especializada de logs.
+- Asegúrate que errores no recuperables se presenten con el nivel de _error_.
+- Asegúrate que errores recuperables se presenten como el nivel de _warning_ .
+- Asegúrate que información para _debugear_ se presente con nivel de _debug_.
+- Asegúrate no queda ninguna error sin logarse en la aplicación.
 
-Como se puede ver la nueva versión de `messageapp` tiene un problema: los tiempos de respuesta en general funcionan bien, pero hay momentos en los que los tiempos de respuesta crecen enormemente. Este comportamiento es bastante habitual en situaciones de saturación: los tiempos de respuesta se incrementan indefinidamente, realimentando el problema. Por ello, una de las formas más eficientes de restaurar el comportamiento adecuado del servicio degradado es dejar de hacer peticiones para aliviar la carga. Eso es lo que vamos a hacer en este ejercicio.
+### 2 - Monitorizando métricas
 
-Los pasos que debemos implementar en nuestro código son:
+Para conocer cómo se comporta nuestro sistema en producción, hemos de poder exponer métricas internas de cada servicio, al igual que montar paneles de análisis que nos presenten datos de una manera amigable.
 
-1. Si aún no estamos gestionando el timeout asociado a la request del servicio externo, debemos implementarlo.
-   Podemos poner, p. ej. 1s de timeout: si tras 1s la petición a messageapp no ha respondido, cerramos la conexión y consideramos que la petición ha fallado.
-2. A continuación debemos buscar una librería que implemente la funcionalidad de un circuit breaker.
-   Debemos integrarla en la llamada que hacemos a `messageapp` desde nuestro servicio.
-   Configuradla para que con un número reducido de fallos abra el circuito.
-3. Las peticiones ahora pueden fallar por, al menos, 3 motivos:
-   - `messageapp` ha dado un error
-   - `messageapp` ha tardado demasiado y nos ha saltado un timeout
-   - el circuito se ha abierto y no hemos llegado a hacer la petición al servicio externo.
-   Deberíamos poder diferenciar los 3 casos (con un mensaje por pantalla por ejemplo),
-4. Comprobar con un cliente de nuestro API llegamos a ver los 3 tipos de errores en el log del servicio.
+Vamos a introducir un servicio de estadísticas en nuestra topología, expondremos nuestras métricas y crearemos paneles desde los cuales poder monitorizar e investigar el comportamiento de nuestro sistema en tiempo real.
 
-### 3 - Tamaño de la cola
+- Instalar una imagen de [Grafana](https://grafana.com/) con plugin de [Prometheus](https://prometheus.io/).
+- Instrumentar aplicación con _endpoint_ de métricas para Prometheus.
+- Exponer las siguientes métricas mediante Prometheus y configurar sus paneles correspondientes en Grafana.
+  - Ratio de peticiones
+  - Ratio de errores
+  - Tiempo de respuesta
+  - Latencia de principio a fin en elementos en la cola
+  - Latencia en publicar en la cola
+  - Ratio de publicación de mensajes en la cola
+  - Ratio de errores en publicación en la cola
 
-Los problemas de saturación suelen anidarse y, en nuestro caso, es lo que va a suceder.
-Dado que no podemos enviar mensajes al servicio externo cuando se abre el circuito, los mensajes se nos acumularán en la cola.
-Esto está bien, porque nos resuelve el problema de manera puntual, pero si el problema persiste, la cola crecerá, en principio indefinidamente.
-Los problemas derivados de un crecimiento indefinido pueden agravar la situación y afectar a otros componentes.
-Por ejemplo, un crecimiento indefinido puede suponer consumir toda la memoria de un servidor, causando que todos los componentes del servidor fallen.
-Para evitar estos problemas, vamos a implementar un sencillo sistema de backpressure en la cola.
+### 3 - Seguimiento de peticiones
 
-1. Definir unos umbrales de tamaño de cola en variables de entorno. Por ejemplo, un tamaño máximo de 10 mensajes y un umbral de recuperación de 5.
-2. Modificar el código del servicio que publica mensajes en la cola para que, antes de publicar, compruebe el tamaño de la cola.
-   Si la cola alcanza el máximo de mensajes, dejan de publicarse nuevos mensajes y se devuelve un error.
-   Cada petición que llegue a partir de ese momento para publicar mensajes fallará, hasta que el tamaño de la cola se reduzca al umbral de recuperación.
-   Una vez alcanzado el umbral de recuperación, se vuelve a activar la publicación hasta alcanzar el tamaño máximo de nuevo, y así indefinidamente.
-3. Imprimir un mensaje de log cuando se activa / desactiva la publicación en la cola.
-4. Comprobar con un cliente de nuestro API que llegamos a ver estas transiciones. Podemos jugar con el tamaño máximo y el umbral de recuperación para ver las diferencias.
-   Deberíamos poder ver cómo se produce todo el proceso: empiezan a aparecer errores en el servicio externo, se abre el circuito, se llena la cola,
-   y dejan de publicarse los mensajes... hasta que se vuelve a recuperar el servicio y el sistema vuelve a la normalidad.
+Las métricas por servicio son muy útiles pero desafortunadamente ofrecen una visión parcial del sistema en su conjunto.
 
-Además de ver que nuestro componente responde adecuadamente, debemos asegurarnos que el cliente de nuestro API también recibe un error diferenciado para este caso.
-Esto permitiría a los clientes del servicio a su vez abrir el circuito en caso de ser necesario, y no hacer peticiones a nuestro servico que van a ser rechazadas.
+Para poder analizar cuellos de botella en el sistema a nivel global, tendremos que cambiar la forma mediante la cual interactuamos con otros servicios. Tendremos que añadir información extra a las peticiones para poder seguirlas en nuestro sistema.
+
+- Introducir Jaeger (_Open Tracing_) en la topología de tu sistema.
+- Instrumentar la aplicación con Jaeger. Extraer y pasar el identificador de traza a los servicios con los que tu aplicación se comunica y pasar la información oportuna al agente de Jaeger.
+
+### 4 - Alertando problemas
+
+Los paneles de información creados en puntos anteriores nos permiten monitorizar nuestro sistema, pero desgraciadamente requieren de interacción activa por nuestra parte. Tenemos que ir a los paneles de información para conocer el estado de nuestro sistema.
+
+Podemos lanzar alertas que nos avisen de situaciones que requieran atención urgente.
+
+- Crear una alerta sobre una métrica a elegir en Grafana e informar a un canal de Slack a tu elección. Puedes informarte a ti mismo.
