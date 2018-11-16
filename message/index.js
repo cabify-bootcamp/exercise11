@@ -43,6 +43,11 @@ const messageSchema = {
   }
 };
 
+app.use((req, res, next) => {
+  res.locals.startEpoch = Date.now()
+  next()
+})
+
 app.post(
   "/messages",
   bodyParser.json(),
@@ -68,6 +73,7 @@ app.use(function(err, req, res, next) {
 });
 
 app.use(Prometheus.requestCounters);  
+
 app.use(Prometheus.responseCounters);
 
 
